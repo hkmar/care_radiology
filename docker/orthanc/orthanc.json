@@ -1,0 +1,49 @@
+{
+  "Name": "Orthanc",
+  "StorageDirectory": "/var/lib/orthanc/db",
+  "Plugins": ["/usr/share/orthanc/plugins"],
+  "DefaultEncoding": "Utf8",
+  "AuthenticationEnabled": false,
+  "RemoteAccessAllowed": true,
+  "RestApiWriteToFileSystemEnabled": true,
+  "RegisteredUsers": {
+    "orthanc": "orthanc"
+  },
+  "PostgreSQL": {
+    "EnableIndex": true,
+    "EnableStorage": false,
+    "Host": "${POSTGRES_HOST}",
+    "Port": 5432,
+    "Database": "dicom",
+    "Username": "${POSTGRES_USER}",
+    "Password": "${POSTGRES_PASSWORD}",
+    "Lock": true,
+    "EnableSsl": false,
+    "MaximumConnectionRetries": 10,
+    "ConnectionRetryInterval": 5,
+    "IndexConnectionsCount": 50,
+    "TransactionMode": "ReadCommitted",
+    "EnableVerboseLogs": false,
+    "HousekeepingInterval": 1,
+    "AllowInconsistentChildCounts": false,
+    "UseDynamicConnectionPool": true
+  },
+  "StorageArea": "AwsS3Storage",
+  "AwsS3Storage": {
+    "BucketName": "dicom-bucket",
+    "Region": "${BUCKET_REGION}",
+    "Endpoint": "${BUCKET_ENDPOINT}",
+    "AccessKey": "${BUCKET_KEY}",
+    "SecretKey": "${BUCKET_SECRET}",
+    "StorageStructure": "flat",
+    "RootPath": "dicom/",
+    "VirtualAddressing": false
+  },
+  "DicomWeb": {
+    "Enable": true,
+    "Root": "/dicom-web",
+    "EnableWado": true,
+    "WadoRoot": "/wado",
+    "Ssl": false
+  }
+}

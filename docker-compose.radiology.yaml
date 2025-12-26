@@ -1,0 +1,58 @@
+services:
+  ldap:
+    image: dcm4che/slapd-dcm4chee:2.6.8-34.1
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    ports:
+      - "3890:389"
+    volumes:
+      - ldap-data:/var/lib/openldap/openldap-data
+      - ldap-config:/etc/openldap/slapd.d
+
+  arc:
+    image: dcm4che/dcm4chee-arc-psql:5.34.1
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+    env_file:
+      - ./docker/.local.env
+    environment:
+      # POSTGRES_HOST 
+      # POSTGRES_USER 
+      # POSTGRES_PASS 
+      # are fetched from env_file
+      POSTGRES_DB: dicom
+      WILDFLY_CHOWN: /storage
+      WILDFLY_WAIT_FOR: ldap:389 db:5432
+    depends_on:
+      - ldap
+      - db
+      - minio
+    volumes:
+      - arc-wildfly:/opt/wildfly/standalone
+      - arc-storage:/storage
+
+  ohif:
+    image: ohif/app:v3.9.2
+    volumes:
+      - ./care_radiology/docker/ohif/app-config.js:/usr/share/nginx/html/app-config.js
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "32314:80"
+    volumes:
+      - ./care_radiology/docker/nginx-proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - ohif
+      - arc
+
+volumes:
+  ldap-data:
+  ldap-config:
+  arc-wildfly:
+  arc-storage:

@@ -1,0 +1,48 @@
+[project]
+name = "care_radiology"
+version = "0.1.0"
+description = "Django plugin for ohcnetwork/care."
+readme = "README.md"
+authors = [
+  {name = "Open Health Care Network", email = "support@ohc.network"}
+]
+maintainers = [
+  {name = "Open Health Care Network", email = "support@ohc.network"}
+]
+classifiers = [
+    # TODO
+]
+license = {text = "MIT"}
+dependencies = [
+    "django",
+    "celery",
+    "djangorestframework",
+]
+requires-python = ">= 3.10"
+
+[project.optional-dependencies]
+test = [
+    "ruff",  # linting
+]
+
+[project.urls]
+bugs = "https://github.com/ohcnetwork/care_radiology/issues"
+changelog = "https://github.com/ohcnetwork/care_radiology/blob/master/changelog.md"
+homepage = "https://github.com/ohcnetwork/care_radiology"
+
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+]
+
+[tool.uv]
+package = true
