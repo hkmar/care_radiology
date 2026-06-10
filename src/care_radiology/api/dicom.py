@@ -328,6 +328,12 @@ def get_service_requests(
         "patient", "facility", "activity_definition"
     )[:limit]
 
+    gender_map = {
+        "male": "M",
+        "female": "F",
+        "non_binary": "O"
+    }
+
     results = []
     for sr in qs:
         results.append(
@@ -348,7 +354,7 @@ def get_service_requests(
                     "name": sr.patient.name,
                     "address": sr.patient.address,
                     "phone_number": sr.patient.phone_number,
-                    "gender": sr.patient.gender,
+                    "gender": gender_map.get(sr.patient.gender, "O"),
                     "age": sr.patient.age
                 }
             }
